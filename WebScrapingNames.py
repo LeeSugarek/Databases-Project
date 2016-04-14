@@ -8,11 +8,11 @@ import random
 def main():
   html = urlopen("http://www.imdb.com/search/title?year=2015,2015&title_type=feature&sort=moviemeter,asc")
   bsObj = BeautifulSoup(html)
-  titles = bsObj.findAll('a', href=re.compile('/title/'))
-  titleList = []
-  for title in titles:
-    if title.string != None and title.string != 'X':
-      titleList.append(title.string)
-  print(titleList)
+  names = bsObj.findAll('a', href=re.compile('/name/'))
+  nameList = []
+  for name in names:
+    if name.string != None and name.string != 'X':
+      nameList.append(name.string)
+  print(nameList)
 	  
 main()
