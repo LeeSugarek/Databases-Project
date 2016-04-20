@@ -6,13 +6,15 @@ import re
 import random
 
 def main():
-  html = urlopen("http://www.imdb.com/search/title?year=2015,2015&title_type=feature&sort=moviemeter,asc")
-  bsObj = BeautifulSoup(html)
-  titles = bsObj.findAll('a', href=re.compile('/title/'))
-  titleList = []
-  for title in titles:
-    if title.string != None and title.string != 'X':
-      titleList.append(title.string)
-  print(titleList)
-	  
+  year = 2010
+  for year in range (2010,2016):
+    html = urlopen("http://www.imdb.com/search/title?year=" + str(year) + "," + str(year) + "&title_type=feature&sort=moviemeter,asc")
+    bsObj = BeautifulSoup(html)
+    titles = bsObj.findAll('a', href=re.compile('/title/'))
+    titleList = []
+    for title in titles:
+      if title.string != None and title.string != 'X':
+        titleList.append(title.string)
+    print(titleList)
+    print(len(titleList))
 main()
