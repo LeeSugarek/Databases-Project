@@ -5,16 +5,21 @@ from bs4 import BeautifulSoup
 import re
 import random
 import pymysql
+conn = pymysql.connect(host='127.0.0.1', user='root', passwd=None, db='mysql')
+cur = conn.cursor()
+cur.execute("USE project")
 
-def main():
-  conn = pymysql.connect(host='127.0.0.1', user='root', passwd=None, db='mysql')
-  cur = conn.cursor()
-  cur.execute("USE mysql")
-  cur.execute("SELECT * FROM TeamMembers")
-  print(cur.fetchone())
-  print(cur.fetchone())
-  year = 2015
-  for year in range (2015,2016):
+def storeMovie(title, year, rating, classification):
+  insert_stmt = ("INSERT INTO Movies (id,title,year,rating,classification) " \
+  "VALUES (NULL, %s, %s, %s, %s)" )
+  data = (title, year, rating, classification)
+  cur.execute(insert_stmt, data)
+  cur.connection.commit()	
+
+
+def main(): 
+  year = 1976
+  for year in range (1975,2016):
     html = urlopen("http://www.imdb.com/search/title?year=" + str(year) + "," + str(year) + "&title_type=feature&sort=moviemeter,asc")
     bsObj = BeautifulSoup(html, "html.parser")
 	
@@ -24,8 +29,8 @@ def main():
     for title in titles:
       if title.string != None and title.string != 'X':
         titleList.append(title.string)
-    print(titleList)
-    print(len(titleList))
+    # print(titleList)
+    # print(len(titleList))
 	
     #Scraping Ratings of the Movies
     ratings = bsObj.findAll('span', attrs={'class':'value'})
@@ -97,4 +102,9 @@ def main():
       AllNameList.append(MovieNameList)	  
     # print(AllNameList)
     # print(len(AllNameList))	
+	
+    # inserting data into mysql tables
+    for i in range (0,50):
+      storeMovie(titleList[i], year, ratingList[i], classificationList2[i])
+	
 main()
