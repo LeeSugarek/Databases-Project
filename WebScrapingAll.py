@@ -16,10 +16,26 @@ def storeMovie(title, year, rating, classification):
   cur.execute(insert_stmt, data)
   cur.connection.commit()	
 
+def storeGenre(GenreID, genre):
+  insert_stmt = ("INSERT INTO Genres (GenreID, genre)" \
+  "VALUES (%s, %s)")
+  data = (GenreID, genre)
+  cur.execute(insert_stmt, data)
+  cur.connection.commit()
+
+def storeName(NameID, name):
+  insert_stmt = ("INSERT INTO Names (NameID, name)" \
+  "VALUES (%s, %s)")
+  data = (NameID, name)
+  cur.execute(insert_stmt, data)
+  cur.connection.commit()
+
 
 def main(): 
   year = 1976
-  for year in range (1975,2016):
+  GenreID = 1
+  NameID = 1
+  for year in range (1976,2016):
     html = urlopen("http://www.imdb.com/search/title?year=" + str(year) + "," + str(year) + "&title_type=feature&sort=moviemeter,asc")
     bsObj = BeautifulSoup(html, "html.parser")
 	
@@ -106,5 +122,15 @@ def main():
     # inserting data into mysql tables
     for i in range (0,50):
       storeMovie(titleList[i], year, ratingList[i], classificationList2[i])
+    
+    for i in range (0,50):
+      for j in range (len(genreList2[i])):
+        storeGenre(GenreID, genreList2[i][j])
+      GenreID += 1
+
+    for i in range (0, 50):
+      for j in range (len(AllNameList[i])):
+        storeName(NameID, AllNameList[i][j])
+      NameID += 1
 	
 main()
