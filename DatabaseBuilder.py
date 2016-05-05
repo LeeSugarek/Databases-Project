@@ -7,7 +7,11 @@ import random
 import pymysql
 conn = pymysql.connect(host='127.0.0.1', user='root', passwd=None, db='mysql')
 cur = conn.cursor()
-cur.execute("USE project")
+cur.execute("CREATE DATABASE projectLeeAndJD")
+cur.execute("USE projectLeeAndJD")
+cur.execute("CREATE TABLE Movies( id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, title VARCHAR (100), year INT, rating float(3,1), classification VARCHAR(10))")
+cur.execute("CREATE TABLE Names( NameID INT NOT NULL, Name VARCHAR(100))")
+cur.execute("CREATE TABLE Genres( GenreID INT NOT NULL, Genre VARCHAR(100))")
 
 # This function stores movies into the movies database table
 # The movie database table contains the movieID, title, rating, and classification of each movie
@@ -95,8 +99,6 @@ def main():
         classificationList2.append('PG')
       elif '"G"' in str(classificationList[i]):
         classificationList2.append('G')
-      elif '"NC_17"' in str(classificationList[i]):
-        classificationList2.append('NC_17')
       else:
         classificationList2.append('other')
       

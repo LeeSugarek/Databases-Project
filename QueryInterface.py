@@ -5,7 +5,7 @@ import re
 import random
 conn = pymysql.connect(host='127.0.0.1', user='root', passwd=None, db='mysql')
 cur = conn.cursor()
-cur.execute("USE project")
+cur.execute("USE projectLeeAndJD")
 
 # main query function
 def main():
